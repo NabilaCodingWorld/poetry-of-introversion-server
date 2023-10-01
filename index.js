@@ -34,6 +34,34 @@ async function run() {
 
         const quoteCollection = client.db('petry-of-introversion').collection("quote");
 
+        const usersCollection = client.db('petry-of-introversion').collection('users');
+
+
+
+
+        // users related API start
+
+        // for post
+        app.post('/users', async (req, res) => {
+            const user = req.body;
+            const query = { email: user.email }
+            const existingUser = await usersCollection.findOne(query);
+
+            if (existingUser) {
+                return res.send({ message: 'user already exists' })
+            }
+
+            const result = await usersCollection.insertOne(user);
+            res.send(result);
+        });
+
+
+        // for get
+        app.get('/users', async (req, res) => {
+            const result = await usersCollection.find().toArray();
+            res.send(result);
+        });
+
 
         // daily blog
         app.get('/dailyBlog', async (req, res) => {
