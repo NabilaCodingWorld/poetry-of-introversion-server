@@ -172,6 +172,23 @@ async function run() {
             res.send(result);
         });
 
+        // post daily Blog
+        app.post('/dailyBlog', verifyJWT, verifyAdmin, async (req, res) => {
+            const newItem = req.body;
+            const result = await dailyBlogCollection.insertOne(newItem);
+
+            res.send(result)
+        })
+
+
+        // delete daily blog
+        app.delete('/dailyBlog/:id', verifyJWT, verifyAdmin, async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) }
+            const result = await dailyBlogCollection.deleteOne(query);
+            res.send(result);
+          })
+
 
         // novel
         app.get('/novel', async (req, res) => {
@@ -179,7 +196,7 @@ async function run() {
             res.send(result);
         })
 
-
+  
         // single data load from novel
         app.get('/novel/:id', async (req, res) => {
             const id = req.params.id;
@@ -198,6 +215,26 @@ async function run() {
             const result = await novelCollection.findOne(query, options);
             res.send(result);
         });
+
+
+        // post novel
+        app.post('/novel', verifyJWT, verifyAdmin, async (req, res) => {
+            const newItem = req.body;
+            const result = await novelCollection.insertOne(newItem);
+
+            res.send(result)
+        })
+
+
+        // delete novel
+        app.delete('/novel/:id', verifyJWT, verifyAdmin, async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) }
+            const result = await novelCollection.deleteOne(query);
+            res.send(result);
+          })
+
+
 
 
         // quote
